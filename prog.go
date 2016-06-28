@@ -68,7 +68,7 @@ func drawImage(fract algo.Fractal, fs fractalState) image.Image {
 }
 
 func main() {
-	f := algo.NewMandelbrot(256)
+	f := algo.NewJuliaSq(-0.33+0.62i, 500)
 	fs := fractalState{midx: 0, midy: 0, spanx: 2, spany: 2}
 	img := drawImage(f, fs)
 	gif.Encode(os.Stdout, img, nil)
