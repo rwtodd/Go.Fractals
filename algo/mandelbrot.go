@@ -36,6 +36,8 @@ func (f mandel) Intensity(x, y float64) uint8 {
 	return uint8(float64(ans) * 256 / float64(f.depth))
 }
 
+// Returns a new Fractal which computes the
+// standard mandelbrot set:  x^2 + location.
 func NewMandelbrot(depth int) Fractal {
 	return mandel{depth}
 }

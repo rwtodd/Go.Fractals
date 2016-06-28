@@ -41,6 +41,8 @@ func (f *juliaexp) Intensity(x, y float64) uint8 {
 	return uint8(float64(ans) * 256 / float64(f.depth))
 }
 
+// Returns a new Fractal which computes the
+// Julia variation:  e^x + c.
 func NewJuliaExp(c complex128, depth int) Fractal {
 	return &juliaexp{c: c, depth: depth}
 }

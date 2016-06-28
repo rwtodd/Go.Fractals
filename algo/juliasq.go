@@ -37,6 +37,8 @@ func (f *juliasq) Intensity(x, y float64) uint8 {
 	return uint8(float64(ans) * 256 / float64(f.depth))
 }
 
+// Returns a new Fractal which computes the 
+// Julia variation:  x^2 + c.
 func NewJuliaSq(c complex128, depth int) Fractal {
 	return &juliasq{c: c, depth: depth}
 }
