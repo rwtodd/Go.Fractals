@@ -34,11 +34,11 @@ func drawFractal(fract algo.Fractal,
 		stY int, 
 		endY int) {
 	xUL := fs.midx - 0.5*fs.spanx
-	yUL := fs.midy - 0.5*fs.spany
+	yUL := fs.midy + 0.5*fs.spany
 	for y := stY; y < endY; y++ {
-		ycoord := yUL + float64(y)*fs.spany/float64(picheight)
+		ycoord := yUL - float64(y)/float64(picheight)*fs.spany
 		for x := 0; x < picwidth; x++ {
-			xcoord := xUL + float64(x)*fs.spanx/float64(picwidth)
+			xcoord := xUL + float64(x)/float64(picwidth)*fs.spanx
 			img.SetColorIndex(x, y, fract.Intensity(xcoord, ycoord))
 		}
 	}
@@ -68,8 +68,8 @@ func drawImage(fract algo.Fractal, fs fractalState) image.Image {
 }
 
 func main() {
-	f := algo.NewJuliaSq(-0.33+0.62i, 500)
-	fs := fractalState{midx: 0, midy: 0, spanx: 2, spany: 2}
+	f := algo.NewJuliaExp(-0.6+0.112i, 256)
+	fs := fractalState{midx: 0, midy: 00, spanx: 3, spany: 3}
 	img := drawImage(f, fs)
 	gif.Encode(os.Stdout, img, nil)
 }
