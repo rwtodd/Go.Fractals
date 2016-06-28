@@ -26,10 +26,7 @@ func gray256() color.Palette {
 	return ans
 }
 
-func main() {
-	f := algo.NewMandelbrot(256)
-	fs := fractalState{midx: 0, midy: 0, spanx: 2, spany: 2}
-
+func drawImage(fract algo.Fractal, fs *fractalState) image.Image {
 	img := image.NewPaletted(image.Rectangle{image.Pt(0, 0),
 		image.Pt(picwidth, picheight)},
 		gray256())
@@ -40,9 +37,15 @@ func main() {
 		ycoord := yUL + float64(y)*fs.spany/float64(picheight)
 		for x := 0; x < picwidth; x++ {
 			xcoord := xUL + float64(x)*fs.spanx/float64(picwidth)
-			img.SetColorIndex(x, y, f.Intensity(xcoord, ycoord))
+			img.SetColorIndex(x, y, fract.Intensity(xcoord, ycoord))
 		}
 	}
+	return img
+}
 
+func main() {
+	f := algo.NewMandelbrot(256)
+	fs := fractalState{midx: 0, midy: 0, spanx: 2, spany: 2}
+	img := drawImage(f, &fs)
 	gif.Encode(os.Stdout, img, nil)
 }
