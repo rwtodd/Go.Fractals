@@ -13,16 +13,25 @@ It looks at least as good as the JavaFX version, I think.
 
 ## Status
 
-It's starting to come together. It has a UI now.  The main thing it's missing
-is the ability to click on the image to zoom in and out.  I need to investigate
-what javascript offers me in that area.
+It has feature parity with the JavaFX version now. 
 
-Start it with:
+You can control:
+ * The algorithm
+ * The amount of recursion/colors (depth)
+ * The width and height of the image  
+ * The center and span of the image on the complex plane
 
-    $ fractals-go -local 8001
+And, clicking on the image itself centers it on your click, optionally
+zooming it in or out.
 
-... to start it listening on port 8001.  The index and css files both need
-to be in the same directory as the executable.
+To run on a local machine, start it with:
+
+    fractals-go -local 8001
+
+... to start it listening on port 8001 (for example).  The index and css files both need
+to be in the directory you are running from.
+
+If you start it without arguments it will attempt to run as a fcgi script.
 
 
 [1]: https://github.com/rwtodd/JFXMandelbrot
