@@ -1,6 +1,7 @@
 <html>
-<head><title>Fractals</title>
-<script>
+<head><title>Fractals-Go</title>
+<link rel="stylesheet" type="text/css" href="fract.css">
+<script type="text/javascript">
 function reset() {
    var form = document.getElementById("userInput").elements
    form['width'].value = '600';
@@ -30,28 +31,48 @@ function draw() {
 </script>
 </head>
 <body>
+<div id="controls"> 
 <h1>Fractals</h1>
-<div style="float:left">
 <form id="userInput"> 
-Layout: <select name="fractal">
+<fieldset>
+<legend>Fractal</legend>
+<label>Algorithm:</label>
+        <select name="fractal">
            <option value="Mandelbrot">Mandelbrot</option>
            <option value="JuliaSq">Julia: x^2 + c</option>
            <option value="JuliaExp">Julia e^x + c</option>
         </select><br>
-Width: <input type="number" name="width" value="600"><br>
-Height: <input type="number" name="height" value="600"><br>
-Depth: <input type="number" name="depth" value="256"><br>
-C: <input type="number" name="creal" value="0.0" step="0.000001"> + 
-   <input type="number" name="cimag" value="0.0" step="0.000001">i<br>
-<hr>
-Center: <input type="number" name="cX" value="0.0" step="0.000001"> + 
-        <input type="number" name="cY" value="0.0" step="0.000001">i<br>
-Span:   <input type="number" name="spX" value="3.0" step="0.000001">, 
-        <input type="number" name="spY" value="3.0" step="0.000001"><br>
+<label>C:</label>
+   <span class="inputs">
+       <input type="number" name="creal" value="0.0" step="0.00001"> + 
+       <input type="number" name="cimag" value="0.0" step="0.00001"> i
+   </span>
+</fieldset>
+<fieldset>
+  <legend>Image</legend>
+   <label>Width:</label><input type="number" name="width" value="600"><br>
+   <label>Height:</label><input type="number" name="height" value="600"><br>
+   <label>Depth:</label><input type="number" name="depth" value="256">
+</fieldset>
+<fieldset>
+  <legend>Location</legend>
+  <label>Center:</label>
+   <span class="inputs">
+        <input type="number" name="cX" value="0.0" step="0.00001"> + 
+        <input type="number" name="cY" value="0.0" step="0.00001"> i
+   </span><br>
+  <label>Span:</label>
+   <span class="inputs">
+        <input type="number" name="spX" value="3.0" step="0.000001">, 
+        <input type="number" name="spY" value="3.0" step="0.000001">
+  </span>
+</fieldset>
 </form>
 <button onclick="draw()">Draw</button>
 <button onclick="reset()">Reset</button>
 </div>
-<img id="picture" src="/img">
+<div id="fract">
+   <img id="picture" src="/img">
+</div>
 </body>
 </html>

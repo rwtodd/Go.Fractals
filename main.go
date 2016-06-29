@@ -12,12 +12,13 @@ import (
 	"github.com/rwtodd/fractals-go/algo"
 )
 
-var local = flag.String("local", "", "serve as webserver, example: 0.0.0.0:8000")
+var local = flag.String("local", "", "serve as webserver on this localhost port (e.g., 8000)")
 
 func main() {
 	flag.Parse()
 
 	http.HandleFunc("/", mainHandler)
+	http.HandleFunc("/fract.css", cssHandler)
 	http.HandleFunc("/img", imgHandler)
 	http.HandleFunc("/help", hlpHandler)
 
@@ -34,6 +35,10 @@ func main() {
 
 func mainHandler(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, "index.html")
+}
+
+func cssHandler(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "fract.css")
 }
 
 func hlpHandler(w http.ResponseWriter, r *http.Request) {
