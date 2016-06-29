@@ -1,22 +1,38 @@
 <html>
 <head><title>Fractals</title>
 <script>
+function reset() {
+   var form = document.getElementById("userInput").elements
+   form['width'].value = '600';
+   form['height'].value = '600';
+   form['depth'].value = '256';
+   form['cX'].value = '0.0';
+   form['cY'].value = '0.0';
+   form['spX'].value = '3';
+   form['spY'].value = '3';
+   draw();
+}
+
 function draw() {
-   var form = document.getElementById("userInput")
+   var form = document.getElementById("userInput").elements;
    document.getElementById("picture").src = '/img' + 
-       "?fractal=" + form.elements['fractal'].value +
-       "&depth=" + form.elements['depth'].value +
-       "&creal=" + form.elements['creal'].value +
-       "&cimag=" + form.elements['cimag'].value +
-       "&width=" + form.elements['width'].value +
-       "&height=" + form.elements['width'].value; 
-   return false;
+       "?fractal=" + form['fractal'].value +
+       "&depth=" + form['depth'].value +
+       "&creal=" + form['creal'].value +
+       "&cimag=" + form['cimag'].value +
+       "&cX=" + form['cX'].value +
+       "&cY=" + form['cY'].value +
+       "&spX=" + form['spX'].value +
+       "&spY=" + form['spY'].value +
+       "&width=" + form['width'].value +
+       "&height=" + form['height'].value; 
 } 
 </script>
 </head>
 <body>
 <h1>Fractals</h1>
-<form id="userInput" onSubmit="return draw()"> 
+<div style="float:left">
+<form id="userInput"> 
 Layout: <select name="fractal">
            <option value="Mandelbrot">Mandelbrot</option>
            <option value="JuliaSq">Julia: x^2 + c</option>
@@ -27,9 +43,15 @@ Height: <input type="number" name="height" value="600"><br>
 Depth: <input type="number" name="depth" value="256"><br>
 C: <input type="number" name="creal" value="0.0" step="0.000001"> + 
    <input type="number" name="cimag" value="0.0" step="0.000001">i<br>
-<input type="submit" value="Draw">
-</form>
 <hr>
+Center: <input type="number" name="cX" value="0.0" step="0.000001"> + 
+        <input type="number" name="cY" value="0.0" step="0.000001">i<br>
+Span:   <input type="number" name="spX" value="3.0" step="0.000001">, 
+        <input type="number" name="spY" value="3.0" step="0.000001"><br>
+</form>
+<button onclick="draw()">Draw</button>
+<button onclick="reset()">Reset</button>
+</div>
 <img id="picture" src="/img">
 </body>
 </html>
