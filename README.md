@@ -1,7 +1,7 @@
 # Fractals-Go
 
-This is (going to be) a web version of my
-JavaFX [JFXMandelbrot][1] project. 
+This is a web-based version of my
+JavaFX [JFXMandelbrot][1] project, written in Go!
 
 ## Screenshots
 
@@ -23,6 +23,12 @@ You can control:
 
 And, clicking on the image itself centers it on your click, optionally
 zooming it in or out.
+
+## Obtaining/Running
+
+You can `go get`:
+
+    go get github.com/rwtodd/fractals-go
 
 To run on a local machine, start it with:
 
