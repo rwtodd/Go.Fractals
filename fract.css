@@ -57,6 +57,10 @@ div#controls > form input {
   font-size: 12pt;
 }
 
+div#controls > form input[type="radio"] {
+  width: 1em;
+}
+
 div#controls button {
   font-size: 120%;
   padding: 0.5em;

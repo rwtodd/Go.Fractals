@@ -2,6 +2,31 @@
 <head><title>Fractals-Go</title>
 <link rel="stylesheet" type="text/css" href="fract.css">
 <script type="text/javascript">
+function zoompan(event) {
+  // for now, just pan.
+  var form = document.getElementById("userInput").elements;
+
+  var fimg = document.getElementById("picture").getBoundingClientRect();
+  var deltaX = (event.clientX - fimg.left - (fimg.width/2.0)) / fimg.width;
+  var deltaY = -(event.clientY - fimg.top  - (fimg.height/2.0)) / fimg.height;
+
+  var spanX = parseFloat(form['spX'].value);
+  var spanY = parseFloat(form['spX'].value);
+  form['cX'].value =  parseFloat(form['cX'].value) + deltaX * spanX;
+  form['cY'].value =  parseFloat(form['cY'].value) + deltaY * spanY;
+
+  var clickaction = form['clicking'].value
+  if(clickaction == "In") {
+    form['spX'].value = spanX/2.0; 
+    form['spY'].value = spanY/2.0; 
+  } else if(clickaction == "Out") {
+    form['spX'].value = spanX*2.0; 
+    form['spY'].value = spanY*2.0; 
+  }
+
+  draw();
+}
+
 function reset() {
    var form = document.getElementById("userInput").elements
    form['width'].value = '600';
@@ -67,12 +92,18 @@ function draw() {
         <input type="number" name="spY" value="3.0" step="0.000001">
   </span>
 </fieldset>
+<fieldset>
+  <legend>Clicking On Image</legend>
+  <input type="radio" name="clicking" value="In">Zoom In&nbsp;&nbsp;
+  <input type="radio" name="clicking" value="Out">Zoom Out&nbsp;&nbsp;
+  <input type="radio" checked="true" name="clicking" value="Pan">Pan
+</fieldset>
 </form>
 <button onclick="draw()">Draw</button>
 <button onclick="reset()">Reset</button>
 </div>
 <div id="fract">
-   <img id="picture" src="/img">
+   <img id="picture" onclick="zoompan(event)" src="/img">
 </div>
 </body>
 </html>
