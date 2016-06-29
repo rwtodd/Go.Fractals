@@ -9,10 +9,6 @@ type juliasq struct {
 	c     complex128
 }
 
-func (f *juliasq) Name() string {
-	return "Julia (x^2 + c)"
-}
-
 func (f *juliasq) String() string {
 	return fmt.Sprintf("Jula x^2 + %v (max depth %d)", f.c, f.depth)
 }

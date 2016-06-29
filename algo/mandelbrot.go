@@ -8,10 +8,6 @@ type mandel struct {
 	depth int
 }
 
-func (f mandel) Name() string {
-	return "Mandelbrot"
-}
-
 func (f mandel) String() string {
 	return fmt.Sprintf("Mandelbrot (max depth %d)", f.depth)
 }

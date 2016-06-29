@@ -10,12 +10,8 @@ type juliaexp struct {
 	c     complex128
 }
 
-func (f *juliaexp) Name() string {
-	return "Julia [exp(x) + c]"
-}
-
 func (f *juliaexp) String() string {
-	return fmt.Sprintf("Jula exp(x) + %v (max depth %d)", f.c, f.depth)
+	return fmt.Sprintf("Jula: exp(x) + %v (max depth %d)", f.c, f.depth)
 }
 
 func (f *juliaexp) ArgHelp() string {

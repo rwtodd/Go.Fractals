@@ -16,9 +16,6 @@ type Fractal interface {
 	// coordinates.
 	Intensity(x, y float64) uint8
 
-	// Name gives the name of the fractal equation/algorithm.
-	Name() string
-
 	// ArgHelp provides a help string for use in the UI,
 	// telling the user what the arguments to that fractal
 	// represent.
