@@ -7,11 +7,12 @@ import (
 
 type juliaexp struct {
 	depth int
+	escape float64 
 	c     complex128
 }
 
 func (f *juliaexp) String() string {
-	return fmt.Sprintf("Jula: exp(x) + %v (max depth %d)", f.c, f.depth)
+	return fmt.Sprintf("Julia: exp(x) + %v (max depth %d)", f.c, f.depth)
 }
 
 func (f *juliaexp) ArgHelp() string {
@@ -21,16 +22,15 @@ func (f *juliaexp) ArgHelp() string {
 func (f *juliaexp) Intensity(x, y float64) uint8 {
 	val := complex(x, y)
 	ans := f.depth - 1
-	fc := f.c // make a local copy to help the optimizer
 
 	for ans = f.depth - 1; ans > 0; ans-- {
-		if norm(val) >= 4.0 {
+		if norm(val) >= f.escape {
 			break
 		}
 		// e^(a+bi) == e^a(cos b + i sin b)
 		ea := math.Exp(real(val))
-		val = complex(ea*math.Cos(imag(val))+real(fc),
-			ea*math.Sin(imag(val))+imag(fc))
+		val = complex(ea*math.Cos(imag(val))+real(f.c),
+			ea*math.Sin(imag(val))+imag(f.c))
 	}
 
 	// scale the answer to the 0 - 255 range
@@ -39,6 +39,6 @@ func (f *juliaexp) Intensity(x, y float64) uint8 {
 
 // Returns a new Fractal which computes the
 // Julia variation:  e^x + c.
-func NewJuliaExp(c complex128, depth int) Fractal {
-	return &juliaexp{c: c, depth: depth}
+func NewJuliaExp(c complex128, depth int, escape float64) Fractal {
+	return &juliaexp{c: c, depth: depth, escape: escape}
 }

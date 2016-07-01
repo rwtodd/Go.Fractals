@@ -46,6 +46,7 @@ function draw() {
        "&depth=" + form['depth'].value +
        "&creal=" + form['creal'].value +
        "&cimag=" + form['cimag'].value +
+       "&esc=" + form['esc'].value +
        "&cX=" + form['cX'].value +
        "&cY=" + form['cY'].value +
        "&spX=" + form['spX'].value +
@@ -66,17 +67,19 @@ function draw() {
            <option value="Mandelbrot">Mandelbrot</option>
            <option value="JuliaSq">Julia: x^2 + c</option>
            <option value="JuliaExp">Julia e^x + c</option>
+           <option value="JuliaZExp">Julia x*e^x + c</option>
         </select><br>
 <label>C:</label>
    <span class="inputs">
        <input type="number" name="creal" value="0.0" step="0.00001"> + 
        <input type="number" name="cimag" value="0.0" step="0.00001"> i
-   </span>
+   </span><br>
+<label>Escapes:</label><input type="number" name="esc" value="4.0" step="1"> 
 </fieldset>
 <fieldset>
   <legend>Image</legend>
-   <label>Width:</label><input type="number" name="width" value="600"><br>
-   <label>Height:</label><input type="number" name="height" value="600"><br>
+   <label>Size:</label><input type="number" name="width" value="600"> x 
+                       <input type="number" name="height" value="600"><br>
    <label>Depth:</label><input type="number" name="depth" value="256">
 </fieldset>
 <fieldset>

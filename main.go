@@ -66,7 +66,13 @@ func fractalFactory(args url.Values) (f algo.Fractal) {
 	case "JuliaExp":
 		creal, _ := strconv.ParseFloat(getOrElse(args["creal"], "0.1"), 64)
 		cimag, _ := strconv.ParseFloat(getOrElse(args["cimag"], "0.1"), 64)
-		f = algo.NewJuliaExp(complex(creal, cimag), depth)
+		esc, _ := strconv.ParseFloat(getOrElse(args["esc"], "4.0"), 64)
+		f = algo.NewJuliaExp(complex(creal, cimag), depth, esc)
+	case "JuliaZExp":
+		creal, _ := strconv.ParseFloat(getOrElse(args["creal"], "0.1"), 64)
+		cimag, _ := strconv.ParseFloat(getOrElse(args["cimag"], "0.1"), 64)
+		esc, _ := strconv.ParseFloat(getOrElse(args["esc"], "4.0"), 64)
+		f = algo.NewJuliaZExp(complex(creal, cimag), depth, esc)
 	default:
 		f = algo.NewMandelbrot(depth)
 	}
