@@ -9,7 +9,7 @@ body {
 div#controls {
   background: #d2d9e0;
   padding: 10px;
-  height: 100%;
+  min-height: 100%;
   float: left;
   border-right: 4px solid #444;
 }
