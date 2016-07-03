@@ -2,6 +2,43 @@
 <head><title>Fractals-Go</title>
 <link rel="stylesheet" type="text/css" href="fract.css">
 <script type="text/javascript">
+var optparm = new Map();
+function get_config() {
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function() {
+     if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+         var config = JSON.parse(xmlhttp.responseText);
+         var selections = document.getElementById("userInput").elements['fractal'];
+         for(var i = 0; i < config.length; i++) {
+             selections.options.add(new Option(config[i].Display, config[i].ID));
+             optparm.set(config[i].ID, config[i].Params)
+         }
+	 changeFractal();
+     }
+  };
+  xmlhttp.open("GET", "/cfg", true);
+  xmlhttp.send();
+}
+window.onload = get_config;
+
+function changeFractal() {
+  // when fractals change, alter the visible optional params...
+  var theForm = document.getElementById("userInput").elements;
+  var selection = theForm['fractal'].value;
+
+  // turn off all optional params first...
+  var opts = document.getElementsByClassName("optional");
+  for (var i = 0; i < opts.length; i++) {
+    opts[i].style.display = "none";
+  }
+
+  // now turn on all the enabled params
+  var parmlist = optparm.get(selection);
+  for (var i = 0; i < parmlist.length; i++) {
+    theForm[parmlist[i]].parentElement.style.display = "block";
+  }
+}
+
 function zoompan(event) {
   // for now, just pan.
   var form = document.getElementById("userInput").elements;
@@ -62,44 +99,50 @@ function draw() {
 <form id="userInput"> 
 <fieldset>
 <legend>Fractal</legend>
+<div class="param">
 <label>Algorithm:</label>
-        <select name="fractal">
-           <option value="Mandelbrot">Mandelbrot</option>
-           <option value="JuliaSq">Julia: x^2 + c</option>
-           <option value="JuliaExp">Julia e^x + c</option>
-           <option value="JuliaZExp">Julia x*e^x + c</option>
-        </select><br>
+        <select name="fractal" onchange="changeFractal();">
+        </select>
+</div>
+<div class="param optional">
 <label>C:</label>
-   <span class="inputs">
        <input type="number" name="creal" value="0.0" step="0.00001"> + 
        <input type="number" name="cimag" value="0.0" step="0.00001"> i
-   </span><br>
+</div>
+<div class="param optional">
 <label>Escapes:</label><input type="number" name="esc" value="4.0" step="1"> 
+</div>
 </fieldset>
 <fieldset>
   <legend>Image</legend>
+<div class="param">
    <label>Size:</label><input type="number" name="width" value="600"> x 
-                       <input type="number" name="height" value="600"><br>
+                       <input type="number" name="height" value="600">
+</div>
+<div class="param">
    <label>Depth:</label><input type="number" name="depth" value="256">
+</div>
 </fieldset>
 <fieldset>
   <legend>Location</legend>
+<div class="param">
   <label>Center:</label>
-   <span class="inputs">
         <input type="number" name="cX" value="0.0" step="0.00001"> + 
         <input type="number" name="cY" value="0.0" step="0.00001"> i
-   </span><br>
+</div>
+<div class="param">
   <label>Span:</label>
-   <span class="inputs">
         <input type="number" name="spX" value="3.0" step="0.000001">, 
         <input type="number" name="spY" value="3.0" step="0.000001">
-  </span>
+</div>
 </fieldset>
 <fieldset>
   <legend>Clicking On Image</legend>
+<div class="param">
   <input type="radio" name="clicking" value="In">Zoom In&nbsp;&nbsp;
   <input type="radio" name="clicking" value="Out">Zoom Out&nbsp;&nbsp;
   <input type="radio" checked="true" name="clicking" value="Pan">Pan
+</div>
 </fieldset>
 </form>
 <button onclick="draw()">Draw</button>

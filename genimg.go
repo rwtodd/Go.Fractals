@@ -62,4 +62,3 @@ func drawImage(fract algo.Fractal, fs *fractalState) image.Image {
 	wg.Wait()
 	return img
 }
-

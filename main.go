@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"image/gif"
 	"log"
@@ -20,7 +21,7 @@ func main() {
 	http.HandleFunc("/", mainHandler)
 	http.HandleFunc("/fract.css", cssHandler)
 	http.HandleFunc("/img", imgHandler)
-	http.HandleFunc("/help", hlpHandler)
+	http.HandleFunc("/cfg", cfgHandler)
 
 	var err error
 	if *local != "" {
@@ -41,8 +42,12 @@ func cssHandler(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, "fract.css")
 }
 
-func hlpHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("<p>Help Text Goes Here</p>"))
+func cfgHandler(w http.ResponseWriter, r *http.Request) {
+	cfg, err := json.Marshal(configurations)
+	if err != nil {
+		log.Fatal(err)
+	}
+	w.Write(cfg)
 }
 
 func getOrElse(lst []string, def string) string {
@@ -52,29 +57,14 @@ func getOrElse(lst []string, def string) string {
 	return def
 }
 
-func fractalFactory(args url.Values) (f algo.Fractal) {
+func getFractal(args url.Values) (f algo.Fractal) {
 	fractal := getOrElse(args["fractal"], "Mandelbrot")
-	depth, _ := strconv.Atoi(getOrElse(args["depth"], "256"))
-
-	switch fractal {
-	case "Mandelbrot":
-		f = algo.NewMandelbrot(depth)
-	case "JuliaSq":
-		creal, _ := strconv.ParseFloat(getOrElse(args["creal"], "0.1"), 64)
-		cimag, _ := strconv.ParseFloat(getOrElse(args["cimag"], "0.1"), 64)
-		f = algo.NewJuliaSq(complex(creal, cimag), depth)
-	case "JuliaExp":
-		creal, _ := strconv.ParseFloat(getOrElse(args["creal"], "0.1"), 64)
-		cimag, _ := strconv.ParseFloat(getOrElse(args["cimag"], "0.1"), 64)
-		esc, _ := strconv.ParseFloat(getOrElse(args["esc"], "4.0"), 64)
-		f = algo.NewJuliaExp(complex(creal, cimag), depth, esc)
-	case "JuliaZExp":
-		creal, _ := strconv.ParseFloat(getOrElse(args["creal"], "0.1"), 64)
-		cimag, _ := strconv.ParseFloat(getOrElse(args["cimag"], "0.1"), 64)
-		esc, _ := strconv.ParseFloat(getOrElse(args["esc"], "4.0"), 64)
-		f = algo.NewJuliaZExp(complex(creal, cimag), depth, esc)
-	default:
-		f = algo.NewMandelbrot(depth)
+	ffunc, ok := factory[fractal]
+	if ok {
+		f = ffunc(args)
+	} else {
+		// just default to standard mandelbrot
+		f = algo.NewMandelbrot(256)
 	}
 	return
 }
@@ -92,7 +82,7 @@ func imgHandler(w http.ResponseWriter, r *http.Request) {
 	spanX, _ := strconv.ParseFloat(getOrElse(r.Form["spX"], "3.0"), 64)
 	spanY, _ := strconv.ParseFloat(getOrElse(r.Form["spY"], "3.0"), 64)
 
-	f := fractalFactory(r.Form)
+	f := getFractal(r.Form)
 	log.Print(f)
 	fs := fractalState{
 		midx:      centerX,

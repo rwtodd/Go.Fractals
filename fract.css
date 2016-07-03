@@ -40,10 +40,12 @@ div#controls > form fieldset {
   padding-top: 1em;
   background: #eee;
 }
+div#controls > form div.param {
+  margin-bottom: 0.5em;
+}
 div#controls > form label {
   display: inline-block;
   width: 5em;
-  margin-bottom: 0.5em;
 }
 
 div#controls > form select {
