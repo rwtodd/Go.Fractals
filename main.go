@@ -8,22 +8,34 @@ import (
 	"net/http"
 	"net/http/fcgi"
 	"net/url"
+	"path/filepath"
 	"strconv"
 
+	"github.com/rwtodd/apputil-go/resource"
 	"github.com/rwtodd/fractals-go/algo"
 )
 
 var local = flag.String("local", "", "serve as webserver on this localhost port (e.g., 8000)")
 
+// rscBase is the root location of our resources
+var rscBase string
+
 func main() {
+	var err error
+
 	flag.Parse()
+
+	loc := resource.NewPathLocator(nil, true)
+	rscBase, err = loc.Path("github.com/rwtodd/fractals-go")
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	http.HandleFunc("/", mainHandler)
 	http.HandleFunc("/fract.css", cssHandler)
 	http.HandleFunc("/img", imgHandler)
 	http.HandleFunc("/cfg", cfgHandler)
 
-	var err error
 	if *local != "" {
 		err = http.ListenAndServe("localhost:"+*local, nil)
 	} else {
@@ -35,11 +47,11 @@ func main() {
 }
 
 func mainHandler(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, "index.html")
+	http.ServeFile(w, r, filepath.Join(rscBase, "index.html"))
 }
 
 func cssHandler(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, "fract.css")
+	http.ServeFile(w, r, filepath.Join(rscBase, "fract.css"))
 }
 
 func cfgHandler(w http.ResponseWriter, r *http.Request) {
