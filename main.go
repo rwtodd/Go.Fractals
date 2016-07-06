@@ -25,7 +25,7 @@ func main() {
 
 	flag.Parse()
 
-	loc := resource.NewPathLocator(nil, true)
+	loc := resource.NewPathLocator([]string{"."}, true)
 	rscBase, err = loc.Path("github.com/rwtodd/fractals-go")
 	if err != nil {
 		log.Fatal(err)
