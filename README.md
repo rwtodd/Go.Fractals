@@ -30,14 +30,5 @@ You can `go get`:
 
     go get github.com/rwtodd/fractals-go
 
-To run on a local machine, start it with:
-
-    fractals-go -local 8001
-
-... to start it listening on port 8001 (for example).  The index and css files both need
-to be in the directory you are running from.
-
-If you start it without arguments it will attempt to run as a fcgi script.
-
 
 [1]: https://github.com/rwtodd/JFXMandelbrot
