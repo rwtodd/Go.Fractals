@@ -6,8 +6,8 @@ import (
 	"image/gif"
 	"log"
 	"net/http"
-	"net/http/fcgi"
 	"net/url"
+	"os"
 	"path/filepath"
 	"strconv"
 
@@ -15,16 +15,23 @@ import (
 	"github.com/rwtodd/fractals-go/algo"
 )
 
-var local = flag.String("local", "", "serve as webserver on this localhost port (e.g., 8000)")
+var port = flag.String("port", "8000", "serve pages on this localhost port")
+var help bool
 
 // rscBase is the root location of our resources
 var rscBase string
 
 func main() {
 	var err error
+	flag.BoolVar(&help, "help", false, "print this usage information")
+	flag.BoolVar(&help, "h", false, "print this usage information")
 
 	flag.Parse()
 
+	if help {
+		flag.Usage()
+		os.Exit(1)
+	}
 	loc := resource.NewPathLocator([]string{"."}, true)
 	rscBase, err = loc.Path("github.com/rwtodd/fractals-go")
 	if err != nil {
@@ -36,12 +43,7 @@ func main() {
 	http.HandleFunc("/img", imgHandler)
 	http.HandleFunc("/cfg", cfgHandler)
 
-	if *local != "" {
-		err = http.ListenAndServe("localhost:"+*local, nil)
-	} else {
-		err = fcgi.Serve(nil, nil)
-	}
-	if err != nil {
+	if err = http.ListenAndServe("localhost:"+*port, nil); err != nil {
 		log.Fatal(err)
 	}
 }
