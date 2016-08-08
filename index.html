@@ -1,36 +1,18 @@
 <html>
 <head><title>Fractals-Go</title>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css">
 <link rel="stylesheet" type="text/css" href="fract.css">
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+  <script type="text/javascript" src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
 <script type="text/javascript">
 var optparm = new Map();
-function get_config() {
-  var xmlhttp = new XMLHttpRequest();
-  xmlhttp.onreadystatechange = function() {
-     if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-         var config = JSON.parse(xmlhttp.responseText);
-         var selections = document.getElementById("userInput").elements['fractal'];
-         for(var i = 0; i < config.length; i++) {
-             selections.options.add(new Option(config[i].Display, config[i].ID));
-             optparm.set(config[i].ID, config[i].Params)
-         }
-	 changeFractal();
-     }
-  };
-  xmlhttp.open("GET", "/cfg", true);
-  xmlhttp.send();
-}
-window.onload = get_config;
-
 function changeFractal() {
   // when fractals change, alter the visible optional params...
   var theForm = document.getElementById("userInput").elements;
   var selection = theForm['fractal'].value;
 
   // turn off all optional params first...
-  var opts = document.getElementsByClassName("optional");
-  for (var i = 0; i < opts.length; i++) {
-    opts[i].style.display = "none";
-  }
+  $(".optional").hide()
 
   // now turn on all the enabled params
   var parmlist = optparm.get(selection);
@@ -42,10 +24,11 @@ function changeFractal() {
 function zoompan(event) {
   // for now, just pan.
   var form = document.getElementById("userInput").elements;
-
-  var fimg = document.getElementById("picture").getBoundingClientRect();
-  var deltaX = (event.clientX - fimg.left - (fimg.width/2.0)) / fimg.width;
-  var deltaY = -(event.clientY - fimg.top  - (fimg.height/2.0)) / fimg.height;
+  var img = $('#picture')
+  var imgOffs = img.offset(), wid = img.width(), ht = img.height(); 
+  
+  var deltaX = (event.pageX - imgOffs.left - (wid/2.0)) / wid;
+  var deltaY = -(event.pageY - imgOffs.top  - (ht/2.0)) / ht;
 
   var spanX = parseFloat(form['spX'].value);
   var spanY = parseFloat(form['spX'].value);
@@ -65,7 +48,7 @@ function zoompan(event) {
 }
 
 function reset() {
-   var form = document.getElementById("userInput").elements
+   var form = document.getElementById("userInput").elements;
    form['width'].value = '600';
    form['height'].value = '600';
    form['depth'].value = '256';
@@ -92,6 +75,21 @@ function draw() {
        "&height=" + form['height'].value; 
 } 
 </script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $( "#controls" ).resizable({handles: "e"});
+
+    $.getJSON('/cfg', function(data) {
+         var selections = document.getElementById("userInput").elements['fractal'];
+         for(var i = 0; i < data.length; i++) {
+             selections.options.add(new Option(data[i].Display, data[i].ID));
+             optparm.set(data[i].ID, data[i].Params)
+         }
+	 changeFractal();
+    });
+  });
+</script>
+
 </head>
 <body>
 <div id="controls"> 
@@ -106,8 +104,8 @@ function draw() {
 </div>
 <div class="param optional">
 <label>C:</label>
-       <input type="number" name="creal" value="0.0" step="0.00001"> + 
-       <input type="number" name="cimag" value="0.0" step="0.00001"> i
+       <input type="number" name="creal" value="0.0" step="5e-324"> + 
+       <input type="number" name="cimag" value="0.0" step="5e-324"> i
 </div>
 <div class="param optional">
 <label>Escapes:</label><input type="number" name="esc" value="4.0" step="1"> 
@@ -127,13 +125,13 @@ function draw() {
   <legend>Location</legend>
 <div class="param">
   <label>Center:</label>
-        <input type="number" name="cX" value="0.0" step="0.00001"> + 
-        <input type="number" name="cY" value="0.0" step="0.00001"> i
+        <input type="number" name="cX" value="0.0" step="5e-324"> + 
+        <input type="number" name="cY" value="0.0" step="5e-324"> i
 </div>
 <div class="param">
   <label>Span:</label>
-        <input type="number" name="spX" value="3.0" step="0.000001">, 
-        <input type="number" name="spY" value="3.0" step="0.000001">
+        <input type="number" name="spX" value="3.0" step="5e-324">, 
+        <input type="number" name="spY" value="3.0" step="5e-324">
 </div>
 </fieldset>
 <fieldset>
