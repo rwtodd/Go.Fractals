@@ -11,7 +11,7 @@ import (
 	"path/filepath"
 	"strconv"
 
-	"github.com/rwtodd/apputil-go/resource"
+	"github.com/rwtodd/apputil/resource"
 	"github.com/rwtodd/fractals-go/algo"
 )
 
