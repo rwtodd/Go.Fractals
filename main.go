@@ -19,7 +19,7 @@ var port = flag.String("port", "8000", "serve pages on this localhost port")
 var help bool
 
 // rscBase is the root location of our resources
-var rscBase string
+var rscBase resource.Locator
 
 func main() {
 	var err error
@@ -32,11 +32,8 @@ func main() {
 		flag.Usage()
 		os.Exit(1)
 	}
-	loc := resource.NewPathLocator([]string{"."}, true)
-	rscBase, err = loc.Path("github.com/rwtodd/fractals-go")
-	if err != nil {
-		log.Fatal(err)
-	}
+	rscBase = resource.NewPathLocator([]string{"."},
+		filepath.Join("github.com", "rwtodd", "fractals-go", "ui"))
 
 	http.HandleFunc("/", mainHandler)
 	http.HandleFunc("/fract.css", cssHandler)
@@ -49,11 +46,19 @@ func main() {
 }
 
 func mainHandler(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, filepath.Join(rscBase, "index.html"))
+	if index, err := rscBase.Path("index.html"); err == nil {
+		http.ServeFile(w, r, index)
+	} else {
+		log.Fatal(err)
+	}
 }
 
 func cssHandler(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, filepath.Join(rscBase, "fract.css"))
+	if css, err := rscBase.Path("fract.css"); err == nil {
+		http.ServeFile(w, r, css)
+	} else {
+		log.Fatal(err)
+	}
 }
 
 func cfgHandler(w http.ResponseWriter, r *http.Request) {
