@@ -6,7 +6,7 @@ import (
 	"runtime"
 	"sync"
 
-	"github.com/rwtodd/fractals-go/algo"
+	"github.com/rwtodd/Go.Fractals/algo"
 )
 
 type fractalState struct {

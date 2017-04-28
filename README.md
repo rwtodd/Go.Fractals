@@ -13,7 +13,7 @@ It looks at least as good as the JavaFX version, I think.
 
 ## Status
 
-It has feature parity with the JavaFX version now. 
+It has feature parity with the JavaFX version now, except the JavaFX version supports color. 
 
 You can control:
  * The algorithm
@@ -28,7 +28,7 @@ zooming it in or out.
 
 You can `go get`:
 
-    go get github.com/rwtodd/fractals-go
+    go get github.com/rwtodd/Go.Fractals
 
 
-[1]: https://github.com/rwtodd/JFXMandelbrot
+[1]: https://github.com/rwtodd/Java.JFXMandelbrot

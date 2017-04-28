@@ -11,8 +11,8 @@ import (
 	"path/filepath"
 	"strconv"
 
-	"github.com/rwtodd/apputil/resource"
-	"github.com/rwtodd/fractals-go/algo"
+	"github.com/rwtodd/Go.AppUtil/resource"
+	"github.com/rwtodd/Go.Fractals/algo"
 )
 
 var port = flag.String("port", "8000", "serve pages on this localhost port")

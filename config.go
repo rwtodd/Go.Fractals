@@ -4,7 +4,7 @@ import (
 	"net/url"
 	"strconv"
 
-	"github.com/rwtodd/fractals-go/algo"
+	"github.com/rwtodd/Go.Fractals/algo"
 )
 
 // configuration to send to the HTML/JS portion of the
